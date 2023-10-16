@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="view_company_form_inherit_pos_ticket">
+        <field name="name">res.company.form.inherit.pos.ticket</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='general_info']//field[@name='favicon']" position="after">
+                <field name="pos_ticket_qr_code" widget="image" class="float-start oe_avatar"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
