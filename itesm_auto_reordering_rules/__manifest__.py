@@ -15,6 +15,5 @@
     'license': 'OPL-1',
     'depends': [
         'stock',
-    ],
-    'post_init_hook': 'update_orderpoint_external_ids'
+    ]
 }

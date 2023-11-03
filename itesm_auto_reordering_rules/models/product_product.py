@@ -3,33 +3,37 @@ from odoo import api, fields, models
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
-    default_orderpoint_id = fields.Many2one(comodel_name='stock.warehouse.orderpoint', string="Automatically created reordering rule")
-    default_orderpoint_external_id = fields.Many2one(comodel_name='ir.model.data', string="Ir model data associated with the default reordering rule")
+    reordering_rule_ir_model_data_id = fields.Many2one(comodel_name='ir.model.data')
 
-    def _update_default_orderpoint_external_id(self):
-        # If external id exists for auto_orderpoint_id
-        if self.default_orderpoint_external_id:
-            self.default_orderpoint_external_id.name = f"id_rr_{self.default_code}"
-        else:
-            self.default_orderpoint_external_id = self.env['ir.model.data'].create({
-                'module': '__export__', 
-                'name': f"id_rr_{self.default_code}",
-                'model': 'stock.warehouse.orderpoint', 
-                'res_id': self.default_orderpoint_id
-            })
+    def _create_orderpoint(self):
+        self.ensure_one()
+        return self.env['stock.warehouse.orderpoint'].create({
+            'product_id': self.id, 
+            'product_min_qty': 0, 
+            'product_max_qty': 0
+        })
+    
+    def _link_orderpoint_to_external_id(self, orderpoint_id):
+        self.ensure_one()
+        self.reordering_rule_ir_model_data_id = self.env['ir.model.data'].create({
+            'module': '_export_', 
+            'name': f"id_rr_{self.default_code}", 
+            'model': 'stock.warehouse.orderpoint', 
+            'res_id': orderpoint_id
+        })
 
     @api.model
     def create(self, vals):
         product = super(ProductProduct, self).create(vals)
-        product.default_orderpoint_id = self.env['stock.warehouse.orderpoint'].create({
-            'product_id': product.id, 
-        })
         if product.default_code:
-            product._update_default_orderpoint_external_id()
+            new_ordering_rule_id = product._create_orderpoint()
+            product._link_orderpoint_to_external_id(new_ordering_rule_id)
         return product
 
-    def write(self, vals):
-        res = super(ProductProduct, self).write(vals)
-        if vals.get('default_code'):
-            self._update_default_orderpoint_external_id()
-        return res
+    @api.onchange('default_code')
+    def _default_code_change(self):
+        self.ensure_one()
+        if self.orderpoint_ids and self.reordering_rule_ir_model_data_id:
+            self.reordering_rule_ir_model_data_id.write({
+                'name': f"id_rr_{self.default_code}",
+            })
