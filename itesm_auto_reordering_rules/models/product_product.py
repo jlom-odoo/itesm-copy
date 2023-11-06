@@ -7,6 +7,7 @@ class ProductProduct(models.Model):
     default_orderpoint_external_id = fields.Many2one(comodel_name='ir.model.data', string="Ir model data associated with the default reordering rule")
 
     def _update_default_orderpoint_external_id(self):
+        # If external id exists for auto_orderpoint_id
         if self.default_orderpoint_external_id:
             self.default_orderpoint_external_id.name = f"id_rr_{self.default_code}"
         else:
