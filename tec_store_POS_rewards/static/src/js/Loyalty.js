@@ -35,11 +35,11 @@ odoo.define("tec_store_POS_rewards.TecStoreLoyalty", function (require) {
 
       _getRewardLineValuesDiscount(args) {
         const values = super._getRewardLineValuesDiscount(args);
-        if (values) {
+        if (values && values[0].price) {
           if (!this.amount) {
             this._inputAmount();
           }
-          if (values[0].price && values[0].price < this.amount) {
+          if (values[0].price < this.amount) {
             values[0].price = this.amount;
           }
           if (values[0].points_cost && values[0].points_cost > -this.amount) {
