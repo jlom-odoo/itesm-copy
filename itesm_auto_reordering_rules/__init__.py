@@ -27,5 +27,3 @@ def update_orderpoint_external_ids(cr, registry):
             product.default_orderpoint_id = env['stock.warehouse.orderpoint'].sudo().create({
                 'product_id': product.id, 
             })
-        if product.default_code:
-            product._update_default_orderpoint_external_id()
