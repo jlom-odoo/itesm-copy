@@ -35,11 +35,8 @@ odoo.define("tec_store_POS_rewards.TecStoreLoyalty", function (require) {
 
       _getRewardLineValuesDiscount(args) {
         const values = super._getRewardLineValuesDiscount(args);
-        if (values && values[0].price) {
-          if (!this.amount) {
-            this._inputAmount();
-          }
-          if (values[0].price < this.amount) {
+        if (values && values[0]) {
+          if (values[0].price && values[0].price < this.amount) {
             values[0].price = this.amount;
           }
           if (values[0].points_cost && values[0].points_cost > -this.amount) {
@@ -47,6 +44,17 @@ odoo.define("tec_store_POS_rewards.TecStoreLoyalty", function (require) {
           }
         }
         return values;
+      }
+
+      _createLineFromVals(vals) {
+        const line = super._createLineFromVals(vals);
+        const lines = this.get_orderlines();
+        for (let i = 0; i < lines.length; i++) {
+          if (lines[i].is_reward_line && lines[i].product === line.product) {
+            this.remove_orderline(lines[i]);
+          }
+        }
+        return line;
       }
     };
   Registries.Model.extend(Order, TecStoreLoyalty);

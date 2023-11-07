@@ -27,7 +27,7 @@ export class RewardAmountButton extends PosComponent {
       for (let line of order.get_orderlines()) {
         if (line.is_reward_line) {
           line.price = -amount;
-          line.points_cost = -amount;
+          line.points_cost = amount;
         }
       }
     } else {
