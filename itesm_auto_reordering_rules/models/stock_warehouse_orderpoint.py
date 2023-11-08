@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
 class StockWarehouseOrderpoint(models.Model):
@@ -21,9 +21,9 @@ class StockWarehouseOrderpoint(models.Model):
     def create(self, vals):
         orderpoint = super(StockWarehouseOrderpoint, self).create(vals)
         if not orderpoint.product_id.default_code:
-            raise UserError("No se puede crear una orden de reabastecimiento sin referencia interna en el producto.")
+            raise UserError(_("A reordering rule cannot be created for a product without a default code."))
         try:
             orderpoint._update_external_id()
         except Exception as v:
-            raise UserError("No se puede crear más de una orden de reabastecimiento para la misma referencia interna.")
+            raise UserError(_("Only one reordering rule can be created per product."))
         return orderpoint
