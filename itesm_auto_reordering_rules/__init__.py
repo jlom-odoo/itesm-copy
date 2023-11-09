@@ -14,7 +14,7 @@ def update_orderpoint_external_ids(cr, registry):
     # Create new orderpoints for existing products
     products = env['product.product'].search([])
     for product in products:
-        if product.company_id:
+        if product.company_id and product.default_code:
             warehouse_id = env['stock.warehouse'].search([
                 ('company_id', '=', product.company_id.id)
             ], limit=1)
@@ -23,9 +23,7 @@ def update_orderpoint_external_ids(cr, registry):
                 'company_id': product.company_id.id,
                 'warehouse_id': warehouse_id.id
             })
-        else:
+        elif product.default_code:
             product.default_orderpoint_id = env['stock.warehouse.orderpoint'].sudo().create({
                 'product_id': product.id, 
             })
-        if product.default_code:
-            product._update_default_orderpoint_external_id()

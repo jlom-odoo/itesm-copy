@@ -1,0 +1,56 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* itesm_auto_reordering_rules
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-11-08 21:48+0000\n"
+"PO-Revision-Date: 2023-11-08 21:48+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: itesm_auto_reordering_rules
+#. odoo-python
+#: code:addons/itesm_auto_reordering_rules/models/stock_warehouse_orderpoint.py:0
+#, python-format
+msgid ""
+"A reordering rule cannot be created for a product without a default code."
+msgstr "No puede crearse una regla de reabastecimiento para un producto sin referencia interna"
+
+#. module: itesm_auto_reordering_rules
+#: model:ir.model.fields,field_description:itesm_auto_reordering_rules.field_product_product__default_orderpoint_id
+msgid "Automatically created reordering rule"
+msgstr "Regla de reabastecimiento creada automáticamente"
+
+#. module: itesm_auto_reordering_rules
+#: model:ir.model.fields,field_description:itesm_auto_reordering_rules.field_stock_warehouse_orderpoint__default_external_id
+msgid "Default external id"
+msgstr "Id externo por defecto"
+
+#. module: itesm_auto_reordering_rules
+#: model:ir.model,name:itesm_auto_reordering_rules.model_stock_warehouse_orderpoint
+msgid "Minimum Inventory Rule"
+msgstr "Regla de inventario mínimo"
+
+#. module: itesm_auto_reordering_rules
+#. odoo-python
+#: code:addons/itesm_auto_reordering_rules/models/stock_warehouse_orderpoint.py:0
+#, python-format
+msgid "Only one reordering rule can be created per product."
+msgstr "Solo una regla de reabastecimiento puede ser generada por producto."
+
+#. module: itesm_auto_reordering_rules
+#: model:ir.model,name:itesm_auto_reordering_rules.model_product_template
+msgid "Product"
+msgstr "Producto"
+
+#. module: itesm_auto_reordering_rules
+#: model:ir.model,name:itesm_auto_reordering_rules.model_product_product
+msgid "Product Variant"
+msgstr "Variante de producto"
