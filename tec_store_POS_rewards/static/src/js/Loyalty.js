@@ -9,18 +9,28 @@ odoo.define("tec_store_POS_rewards.TecStoreLoyalty", function (require) {
   const TecStoreLoyalty = (Order) =>
     class extends Order {
       async _activateCode(code) {
-        if ((await this._inputAmount()) !== true) {
+        if ((await this._inputAmount(code)) !== true) {
           return;
         }
         return super._activateCode(code);
       }
 
-      async _inputAmount() {
+      async _inputAmount(code) {
+        // Get the coupon's maximum discount amount
+        const result = await this.pos.env.services.rpc({
+          model: "loyalty.card",
+          method: "search_read",
+          kwargs: {
+            domain: [["code", "=", code]],
+            fields: ["id", "points", "code", "partner_id", "program_id"],
+            limit: 1,
+          },
+        });
         const { confirmed, payload: amount } = await Gui.showPopup(
           "TextInputPopup",
           {
             title: _t("Enter Reward Amount"),
-            startingValue: "",
+            startingValue: result[0].points,
             placeholder: _t("Amount"),
           }
         );
@@ -28,7 +38,7 @@ odoo.define("tec_store_POS_rewards.TecStoreLoyalty", function (require) {
           this.amount = -amount;
         } else {
           this.amount = 0;
-          return "Amount is not valid";
+          return _t("Amount is not valid");
         }
         return true;
       }
