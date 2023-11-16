@@ -32,7 +32,7 @@ export class RewardAmountButton extends PosComponent {
       }
     } else {
       order.amount = 0;
-      return "Amount is not valid";
+      return _t("Amount is not valid");
     }
     return true;
   }
