@@ -20,6 +20,14 @@ class StockWarehouseOrderpoint(models.Model):
     @api.model
     def create(self, vals):
         orderpoint = super(StockWarehouseOrderpoint, self).create(vals)
+        # Ignore if manual orderpoint
+        # - Allow creating without a product's default code
+        # - Allow creating multiple per product
+        if orderpoint.trigger == 'manual':
+            return orderpoint
+
+        if not orderpoint.product_id.default_code:
+            raise UserError(_("A reordering rule cannot be created for a product without a default code."))
         if not orderpoint.product_id.default_code:
             raise UserError(_("A reordering rule cannot be created for a product without a default code."))
         try:

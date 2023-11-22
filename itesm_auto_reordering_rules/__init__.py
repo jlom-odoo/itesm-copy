@@ -4,7 +4,9 @@ from . import models
 def update_orderpoint_external_ids(cr, registry):
     env = api.Environment(cr, SUPERUSER_ID, {})
     # Remove all existing orderpoints
-    orderpoints = env['stock.warehouse.orderpoint'].search([])
+    orderpoints = env['stock.warehouse.orderpoint'].search([
+        '|', ('active','=',True),  ('active','=',False)
+    ])
     orderpoints.unlink()
     # Remove all external ids for orderpoints
     orderpoints_external_ids = env['ir.model.data'].search([
