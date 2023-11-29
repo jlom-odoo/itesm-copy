@@ -7,7 +7,7 @@ class StockQuant(models.Model):
     parent_location_id = fields.Many2one('stock.location', related='location_id.location_id', store=True)
 
     def _apply_inventory(self):
-        group_by = self.read_group([('location_id.is_count_location', '=', True), ('parent_location_id.usage', '!=', 'view')],
+        group_by = self.read_group([('location_id.is_count_location', '=', True), ('parent_location_id.usage', '!=', 'view'), ('inventory_quantity_set','=',True)],
                                    ['inventory_quantity', 'lot_id', 'package_id'], ['parent_location_id', 'product_id', 'lot_id', 'package_id'], lazy=False)
         vals_list = []
         for quant in group_by:
@@ -21,10 +21,13 @@ class StockQuant(models.Model):
         if vals_list:
             new_quants = super().create(vals_list)
             ungrouped_quants = self.filtered(lambda q: q.location_id.is_count_location == False or q.parent_location_id.usage == 'view')  # nopep8
-            super(StockQuant, ungrouped_quants + new_quants)._apply_inventory()
+            super(StockQuant, ungrouped_quants)._apply_inventory()
             (self - ungrouped_quants).action_set_inventory_quantity_to_zero()
             (self - ungrouped_quants).write({'user_id': False})
-            new_quants.action_set_inventory_quantity_to_zero()
             (self + new_quants)._merge_quants()
+            res = self.env['stock.quant'].search(
+                [('inventory_quantity', '!=', 0), ('inventory_quantity_set','=',False)])
+            res._compute_inventory_quantity_set()
+            res._compute_inventory_diff_quantity()
         else:
             super(StockQuant, self)._apply_inventory()

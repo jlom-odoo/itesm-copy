@@ -10,6 +10,7 @@ class TestStockQuant(odoo.tests.common.TransactionCase):
         super().setUpClass()
 
         cls.warehouse_id = cls.env['stock.warehouse'].create({
+            'name': 'Tec Store Warehouse',
             'code': 'TecStore',
         })
         cls.parent_location = cls.env['stock.location'].create({
@@ -50,35 +51,41 @@ class TestStockQuant(odoo.tests.common.TransactionCase):
             'product_id': cls.product_standard_one.id,  # xxx
             'location_id': cls.location_table_one.id,
             'lot_id': False,
-            'inventory_quantity': 100.0
+            'inventory_quantity': 100.0,
+            'inventory_quantity_set': True,
         }, {
             'product_id': cls.product_standard_one.id,  # xxx
             'location_id': cls.location_table_two.id,
             'lot_id': False,
-            'inventory_quantity': 100.0
+            'inventory_quantity': 100.0,
+            'inventory_quantity_set': True,
         }, {
             'product_id': cls.product_lot.id,  # yyy
             'location_id': cls.location_table_one.id,
             'lot_id': cls.lot_one.id,  # aaa
-            'inventory_quantity': 100.0
+            'inventory_quantity': 100.0,
+            'inventory_quantity_set': True,
         },
             {
             'product_id': cls.product_lot.id,  # yyy
             'location_id': cls.location_table_two.id,
             'lot_id': cls.lot_one.id,  # aaa
-            'inventory_quantity': 100.0
+            'inventory_quantity': 100.0,
+            'inventory_quantity_set': True,
         },
             {
             'product_id': cls.product_lot.id,  # yyy
             'location_id': cls.location_table_one.id,
             'lot_id': cls.lot_two.id,  # bbb
-            'inventory_quantity': 100.0
+            'inventory_quantity': 100.0,
+            'inventory_quantity_set': True,
         },
             {
             'product_id': cls.product_standard_two.id,  # zzz
             'location_id': cls.location_table_one.id,
             'lot_id': False,
-            'inventory_quantity': 100.0
+            'inventory_quantity': 100.0,
+            'inventory_quantity_set': True,
         }])
 
     def test_apply_all(self):
@@ -113,25 +120,32 @@ class TestStockQuant(odoo.tests.common.TransactionCase):
 
         self.assertEqual(len(before_product_standard) + 1, len(after_product_standard),
                          "New line for Tec Store Product created")
-        self.assertEqual(after_product_standard.quantity, 200.0, "Tec Store Product quantity correct")
-        self.assertEqual(after_product_standard.inventory_quantity, 0.0, "Tec Store Product inventory quantity correct")
+        self.assertEqual(after_product_standard.inventory_quantity,
+                         200.0, "Tec Store Product inventory quantity correct")
+        self.assertEqual(after_product_standard.inventory_diff_quantity,
+                         200.0, "Tec Store Product difference quantity correct")
 
         self.assertEqual(len(before_product_lot_one) + 1, len(after_product_lot_one),
                          "New line for Tec Store Lot Product created")
-        self.assertEqual(after_product_lot_one.quantity, 200.0, "Tec Store Product Lot quantity correct")
-        self.assertEqual(after_product_lot_one.lot_id.name, "TL-0001", "Tec Store Product Lot name correct")
-        self.assertEqual(after_product_lot_one.inventory_quantity, 0.0,
+        self.assertEqual(after_product_lot_one.lot_id.name,
+                         "TL-0001", "Tec Store Product Lot name correct")
+        self.assertEqual(after_product_lot_one.inventory_quantity, 200.0,
                          "Tec Store Product Lot inventory quantity correct")
+        self.assertEqual(after_product_lot_one.inventory_diff_quantity,
+                         200.0, "Tec Store Product Lot difference quantity correct")
 
         self.assertEqual(len(before_product_lot_two) + 1, len(after_product_lot_two),
                          "New line for Tec Store Lot 2 Product created")
-        self.assertEqual(after_product_lot_two.quantity, 100.0, "Tec Store Product Lot 2 quantity correct")
-        self.assertEqual(after_product_lot_two.lot_id.name, "TL-0002", "Tec Store Product Lot 2 name correct")
-        self.assertEqual(after_product_lot_two.inventory_quantity, 0.0,
+        self.assertEqual(after_product_lot_two.lot_id.name,
+                         "TL-0002", "Tec Store Product Lot 2 name correct")
+        self.assertEqual(after_product_lot_two.inventory_quantity, 100.0,
                          "Tec Store Product Lot 2 inventory quantity correct")
+        self.assertEqual(after_product_lot_two.inventory_diff_quantity,
+                         100.0, "Tec Store Product Lot 2 difference quantity correct")
 
         self.assertEqual(len(before_product_standard_two) + 1, len(after_product_standard_two),
                          "New line for Tec Store Product 2 created")
-        self.assertEqual(after_product_standard_two.quantity, 100.0, "Tec Store Product 2 quantity correct")
-        self.assertEqual(after_product_standard_two.inventory_quantity, 0.0,
+        self.assertEqual(after_product_standard_two.inventory_quantity, 100.0,
                          "Tec Store Product 2 inventory quantity correct")
+        self.assertEqual(after_product_standard_two.inventory_diff_quantity,
+                         100.0, "Tec Store Product 2 difference quantity correct")
