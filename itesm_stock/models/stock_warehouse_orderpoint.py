@@ -4,6 +4,7 @@ from odoo.exceptions import UserError, ValidationError
 class StockWarehouseOrderpoint(models.Model):
     _inherit = "stock.warehouse.orderpoint"
     default_external_id = fields.Many2one(comodel_name='ir.model.data', string='Default external id')
+    location_warehouse_id = fields.Integer(string="Location Warehouse ID", related="location_id.warehouse_id.id")
 
 
     def _update_external_id(self):
