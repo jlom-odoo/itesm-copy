@@ -18,6 +18,7 @@
     "category": "Custom Development",
     "version": "1.0.0",
     "author": "Odoo, Inc",
+    "maintainer": "Odoo, Inc",
     "website": "https://www.odoo.com/",
     "license": "OPL-1",
     "depends": [
