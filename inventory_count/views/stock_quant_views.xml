@@ -9,6 +9,7 @@
                 <field name="parent_location_id"/>
             </field>
             <xpath expr="//button[@name='action_apply_inventory']" position="replace">
+                <button name="action_apply_inventory"/>
             </xpath>
         </field>
     </record>
