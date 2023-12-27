@@ -126,9 +126,4 @@ class StockWarehouseOrderpoint(models.Model):
                 })
                 orderpoint_values_list.append(orderpoint_values)
 
-        """orderpoints = self.env['stock.warehouse.orderpoint'].with_user(SUPERUSER_ID).create(orderpoint_values_list)
-        for orderpoint in orderpoints:
-            orderpoint._set_default_route_id()
-            orderpoint.qty_multiple = orderpoint._get_qty_multiple_to_order()"""
-        print(f"================= ORDERPOINTS {orderpoint_values_list}")
         return action
