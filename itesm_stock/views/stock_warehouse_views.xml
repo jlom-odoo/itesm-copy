@@ -9,7 +9,7 @@
                 <field name="location_warehouse_id" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='route_id']" position="attributes">
-                <attribute name="domain">[('supplier_wh_id.id','=',location_warehouse_id)]</attribute>
+                <attribute name="domain">[('supplied_wh_id.id','=',location_warehouse_id)]</attribute>
             </xpath>
         </field>
     </record>
