@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 class ProductProduct(models.Model):
     _inherit = "product.product"
@@ -11,7 +12,12 @@ class ProductProduct(models.Model):
         else:
             self.default_orderpoint_id = self.env['stock.warehouse.orderpoint'].create({
                 'product_id': self.id, 
+                'trigger': 'manual'
             })
+            try:
+                self.default_orderpoint_id._update_external_id()
+            except Exception as v:
+                raise UserError(_("Only one reordering rule can be created per product."))
 
     @api.model
     def create(self, vals):
