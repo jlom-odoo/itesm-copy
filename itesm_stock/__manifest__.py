@@ -32,6 +32,7 @@
         'views/stock_quant_views.xml',
         'views/stock_route_views.xml',
         'views/stock_warehouse_views.xml',
+        'views/stock_orderpoint_views.xml'
     ],
     'post_init_hook': 'update_orderpoint_external_ids'
 }

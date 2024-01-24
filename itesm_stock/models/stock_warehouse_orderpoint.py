@@ -28,10 +28,6 @@ class StockWarehouseOrderpoint(models.Model):
         
         if not orderpoint.product_id.default_code:
             raise UserError(_("A reordering rule cannot be created for a product without a default code."))
-        try:
-            orderpoint._update_external_id()
-        except Exception as v:
-            raise UserError(_("Only one reordering rule can be created per product."))
         return orderpoint
 
     def _get_orderpoint_action(self):
