@@ -1,0 +1,14 @@
+#. module: tec_store_overlapping_promos
+#. odoo-javascript
+#: code:addons/tec_store_POS_reward/static/src/js/RewardButton.js:0
+#, python-format
+msgid "Colaborators list"
+msgstr "Lista de colaboradores"
+
+#. module: tec_store_overlapping_promos
+#. odoo-javascript
+#: code:addons/tec_store_POS_reward/static/src/js/RewardButton.js:0
+#, python-format
+msgid "It seems that you are on the partner list, if you apply this promotion you will lose the 10% discount. \n Available rewards for this product: \n"
+msgstr "Al parecer estás en la lista de colaboradores, si aplicas esta promoción perderás el 10% de descuento.  \n Recompensas disponibles para este producto: \n"
+
