@@ -16,6 +16,7 @@ odoo.define("tec_store_POS_rewards.TecStoreLoyalty", function (require) {
       }
 
       async _inputAmount(code) {
+        this.curr_amount_by_id = this.curr_amount_by_id || {};
         // Get the coupon's maximum discount amount
         const result = await this.pos.env.services.rpc({
           model: "loyalty.card",
@@ -26,6 +27,9 @@ odoo.define("tec_store_POS_rewards.TecStoreLoyalty", function (require) {
             limit: 1,
           },
         });
+        if (!result || !result[0]) {
+          return _t("No eWallet/gift card exists with the provided code");
+        }
         const { confirmed, payload: amount } = await Gui.showPopup(
           "TextInputPopup",
           {
@@ -35,9 +39,9 @@ odoo.define("tec_store_POS_rewards.TecStoreLoyalty", function (require) {
           }
         );
         if (confirmed && amount && amount > 0) {
-          this.amount = -amount;
+          this.curr_amount_by_id[ result[0].id ] = -amount;
         } else {
-          this.amount = 0;
+          this.curr_amount_by_id[ result[0].id ] = 0;
           return _t("Amount is not valid");
         }
         return true;
@@ -45,12 +49,13 @@ odoo.define("tec_store_POS_rewards.TecStoreLoyalty", function (require) {
 
       _getRewardLineValuesDiscount(args) {
         const values = super._getRewardLineValuesDiscount(args);
-        if (values && values[0]) {
-          if (values[0].price && values[0].price < this.amount) {
-            values[0].price = this.amount;
+        if (values && values[0] && this.curr_amount_by_id) {
+          const curr_amount = this.curr_amount_by_id[values[0].coupon_id];
+          if (values[0].price && curr_amount && values[0].price < curr_amount) {
+            values[0].price = curr_amount;
           }
-          if (values[0].points_cost && values[0].points_cost > -this.amount) {
-            values[0].points_cost = -this.amount;
+          if (values[0].points_cost && curr_amount && values[0].points_cost > -curr_amount) {
+            values[0].points_cost = -curr_amount;
           }
         }
         return values;
