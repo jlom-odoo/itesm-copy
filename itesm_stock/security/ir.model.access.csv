@@ -1,0 +1,3 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+stock_route_backoffice_user,stock.route backoffice_user,stock.model_stock_route,group_backoffice_user,1,1,1,1
+stock_route_default_user,stock.route default_user,stock.model_stock_route,base.group_user,0,0,0,0
