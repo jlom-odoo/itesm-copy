@@ -12,7 +12,7 @@
     - Add backoffice group with all permissions
     - Add record rule to hide routes with backoffice route enabled except for users in the backoffice group
 
-    - Developers: EUVM,COGS,IASE
+    - Developers: EUVM,COGS,IASE,GECM
     - Task IDs: 3470757,3513703,3470766
     """,
     "category": "Custom Development",
@@ -22,7 +22,7 @@
     "website": "https://www.odoo.com/",
     "license": "OPL-1",
     "depends": [
-        'stock'
+        'stock',
     ],
     "data": [
         'security/reorder_rule_locations_groups.xml',
@@ -32,7 +32,11 @@
         'views/stock_quant_views.xml',
         'views/stock_route_views.xml',
         'views/stock_warehouse_views.xml',
-        'views/stock_orderpoint_views.xml'
     ],
+    'assets': {
+        'web.assets_backend': [
+            'itesm_stock/static/src/js/**/*',
+        ],
+    },
     'post_init_hook': 'update_orderpoint_external_ids'
 }
