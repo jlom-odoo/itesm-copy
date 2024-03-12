@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<templates>
-    <t t-extend="web.ListView.Buttons" t-name="ItesmStock.Buttons" owl="1">
-        <xpath expr="//t[@t-elif='activeActions.create']" position="replace">
+<templates xml:space="preserve">
+    <t t-inherit="web.ListView.Buttons" t-inherit-mode="extension" t-name="ItesmStock.Buttons" owl="1">
+        <xpath expr="//t[@t-elif='activeActions.create']" position="after">
             <t t-elif="activeActions.create and model.root.resModel != 'stock.warehouse.orderpoint'">
                 <button type="button" class="btn btn-primary o_list_button_add" data-hotkey="c" t-on-click="onClickCreate" data-bounce-button="">
                             New
