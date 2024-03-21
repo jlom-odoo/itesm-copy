@@ -6,6 +6,6 @@ import {patch} from "@web/core/utils/patch";
 patch(ListController.prototype, "itesm_stock_list_controller", {
   onClickCreate() {
     if (this.model.root.resModel !== "stock.warehouse.orderpoint")
-      super.onClickCreate();
+      this._super(...arguments);
   }
 })
